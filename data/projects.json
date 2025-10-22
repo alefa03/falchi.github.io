@@ -1,0 +1,17 @@
+[
+    {
+        "title": "Bachelor's Thesis",
+        "description": "The project aims to show how, through the use of a simulator, it is possible to program a robot in a faster, practical, and reliable way.<br><br><a class='btn small' href='./pages/b_thesis.html' class='link'>More info</a>",
+        "tags": ["Python", "ROS2", "Gazebo", "Docker", "Git", "LaTeX"]
+    },
+    {
+        "title": "Text2SQL",
+        "description": "Computer Science lab project: containerized application capable of getting italian requests from a web frontend, and converting them to SQL queries for a local database with the use of a language model.",
+        "tags": ["Python", "FastAPI", "Pydantic", "Jinja2", "MariaDB", "SQL", "Docker", "Git", "LaTeX"]
+    },
+    {
+        "title": "PlantPal",
+        "description": "Small hydroponics farm built during an automation course.",
+        "tags": ["Electronics", "ESP32", "ESPHome", "Home Assistant", "3D Printing", "FreeCAD", "SFC"]
+    }
+]

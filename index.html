@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Home — Falchi Webpage</title>
+    <meta name="description" content="Personal presentation: studies, projects, experience, interests." />
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div class="wrap">
+        <header>
+            <div class="brand">
+                <div class="logo" aria-hidden="true">AMF</div>
+                <div>
+                    <div style="font-weight:700">Alessio Maria Falchi</div>
+                    <div style="color:var(--muted);font-size:13px">Student at Sapienza University of Rome</div>
+                </div>
+            </div>
+        </header>
+
+        <section class="hero">
+            <div class="card intro" id="about">
+                <h1>Greetings!</h1>
+                <p>I'm Alessio. I graduated in Computer Engineering and I am currently majoring in Artificial
+                    Intelligence and Robotics at Sapienza. If you wish to contact me, check the related info box.</p>
+                <div class="stats" role="list" aria-label="Quick stats">
+                    <!-- <div class="stat" role="listitem"><strong>Degree</strong><div style="color:var(--muted);font-size:13px">B.Sc. Computer Engineering, x/110</div></div> -->
+                    <div class="stat" role="listitem"><strong>Location</strong>
+                        <div style="color:var(--muted);font-size:13px">Italy</div>
+                    </div>
+                    <div class="stat" role="listitem"><strong>Status</strong>
+                        <div style="color:var(--muted);font-size:13px">Open to internships</div>
+                    </div>
+                </div>
+                <!-- <a href="https://docs.google.com/document/d/1a3Ax_k45JRLs8P_X73m3Sutg02jrnoiGGmGI13uh_Ag/" class="btn" target="_blank" rel="noopener noreferrer" style="margin-top:18px">View my CV</a> -->
+            </div>
+
+            <aside class="card" aria-label="Contact & quick links" id="contact">
+                <h3 style="margin:0 0 8px 0">Contact</h3>
+                <div class="contact-list">
+                    <div style="color:var(--muted);font-size:13px">Email: <a
+                            href="mailto:falchi.2064959@studenti.uniroma1.it"
+                            style="color:var(--accent);text-decoration:none">falchi.2064959@studenti.uniroma1.it</a>
+                    </div>
+                    <div style="color:var(--muted);font-size:13px">
+                        LinkedIn: <a href="https://www.linkedin.com/in/alessio-maria-falchi-964854377/"
+                            style="color:var(--accent);text-decoration:none" target="_blank"
+                            rel="noopener noreferrer">Alessio Maria Falchi</a><br>
+                        GitHub: <a href="https://github.com/alefa03" style="color:var(--accent);text-decoration:none"
+                            target="_blank" rel="noopener noreferrer">alefa03</a><br>
+                    </div>
+
+                    <div style="margin-top:16px">
+                        <h4 style="margin:0 0 8px 0;font-size:14px">Current focus</h4>
+                        <p style="margin:0;color:var(--muted);font-size:13px">Artificial Intelligence and Robotics</p>
+                    </div>
+            </aside>
+        </section>
+
+        <main>
+            <section id="projects" class="card">
+                <h2>Projects</h2>
+                <div id="projects-list" class="grid projects" aria-label="Project list">
+                    <div style="color:var(--muted);font-size:13px" id="projects-loading">Loading projects…</div>
+                </div>
+            </section>
+
+            <section id="experience" class="card">
+                <h2>Experience</h2>
+                <div id="experience-list" class="timeline" aria-label="Experience timeline">
+                    <div style="color:var(--muted);font-size:13px" id="experience-loading">Loading experience…</div>
+                </div>
+            </section>
+
+            <section id="studies" class="card">
+                <h2>Studies</h2>
+                <div id="studies-list" class="timeline" aria-label="Studies timeline">
+                    <div style="color:var(--muted);font-size:13px" id="studies-loading">Loading studies...</div>
+                </div>
+            </section>
+
+            <section id="interests" class="card">
+                <h2>Interests</h2>
+                <p style="color:var(--muted);margin-top:0"></p>
+                <div id="interests-list" class="chips" aria-hidden="false">
+                    <div style="color:var(--muted);font-size:13px" id="interests-loading">Loading interests…</div>
+                </div>
+            </section>
+        </main>
+
+        <script>
+            // Dynamically load content for each section from JSON files.
+            (function () {
+                const paths = {
+                    projects: './data/projects.json',
+                    experience: './data/experience.json',
+                    studies: './data/studies.json',
+                    interests: './data/interests.json'
+                };
+
+                function fetchJson(path) {
+                    return fetch(path).then(r => {
+                        if (!r.ok) throw new Error('Network response was not ok');
+                        return r.json();
+                    });
+                }
+
+                // Projects: expect array [{ "title": "", "description": "", "tags": ["", ...] }, ...]
+                function renderProjects(list) {
+                    const container = document.getElementById('projects-list');
+                    container.innerHTML = '';
+
+                    const section = document.getElementById('projects');
+                    if (!Array.isArray(list) || list.length === 0) {
+                        if (section) {
+                            section.style.display = 'none';
+                        } else {
+                            container.innerHTML = '<div style="color:var(--muted);font-size:13px">No project entries available.</div>';
+                        }
+                        return;
+                    }
+                    if (section) section.style.display = '';
+
+                    for (const p of list) {
+                        const art = document.createElement('article');
+                        art.className = 'project';
+                        art.setAttribute('role', 'article');
+
+                        const h3 = document.createElement('h3');
+                        h3.textContent = p.title || 'Untitled project';
+                        art.appendChild(h3);
+
+                        const desc = document.createElement('p');
+                        // Use innerHTML instead of textContent for rich text
+                        desc.innerHTML = p.description || '';
+                        art.appendChild(desc);
+
+                        if (Array.isArray(p.tags) && p.tags.length) {
+                            const tags = document.createElement('div');
+                            tags.className = 'tags';
+                            for (const t of p.tags) {
+                                const span = document.createElement('span');
+                                span.className = 'tag';
+                                span.textContent = t;
+                                tags.appendChild(span);
+                            }
+                            art.appendChild(tags);
+                        }
+
+                        container.appendChild(art);
+                    }
+                }
+
+                // Experience: expect array [{ "period":"", "role":"", "description":"" }, ...]
+                function renderExperience(list) {
+                    const container = document.getElementById('experience-list');
+                    container.innerHTML = '';
+
+                    const section = document.getElementById('experience');
+                    if (!Array.isArray(list) || list.length === 0) {
+                        if (section) {
+                            section.style.display = 'none';
+                        } else {
+                            container.innerHTML = '<div style="color:var(--muted);font-size:13px">No experience entries available.</div>';
+                        }
+                        return;
+                    }
+                    if (section) section.style.display = ''; // makes sure section is visible only when entries exist
+
+                    for (const e of list) {
+                        const row = document.createElement('div');
+                        row.className = 'exp';
+
+                        const period = document.createElement('div');
+                        period.className = 'period';
+                        period.textContent = e.period || '';
+                        row.appendChild(period);
+
+                        const content = document.createElement('div');
+                        const h4 = document.createElement('h4');
+                        h4.textContent = e.role || '';
+                        content.appendChild(h4);
+
+                        const p = document.createElement('p');
+                        p.textContent = e.description || '';
+                        content.appendChild(p);
+
+                        row.appendChild(content);
+                        container.appendChild(row);
+                    }
+                }
+
+                // Studies: expect array [{ "period":"", "title":"", "description":"" }, ...]
+                function renderStudies(list) {
+                    const container = document.getElementById('studies-list');
+                    container.innerHTML = '';
+
+                    const section = document.getElementById('studies');
+                    if (!Array.isArray(list) || list.length === 0) {
+                        if (section) {
+                            section.style.display = 'none';
+                        } else {
+                            container.innerHTML = '<div style="color:var(--muted);font-size:13px">No study entries available.</div>';
+                        }
+                        return;
+                    }
+                    if (section) section.style.display = ''; // makes sure section is visible only when entries exist
+
+                    for (const e of list) {
+                        const row = document.createElement('div');
+                        row.className = 'exp';
+
+                        const period = document.createElement('div');
+                        period.className = 'period';
+                        period.textContent = e.period || '';
+                        row.appendChild(period);
+
+                        const content = document.createElement('div');
+                        const h4 = document.createElement('h4');
+                        h4.textContent = e.title || '';
+                        content.appendChild(h4);
+
+                        const p = document.createElement('p');
+                        p.textContent = e.description || '';
+                        content.appendChild(p);
+
+                        row.appendChild(content);
+                        container.appendChild(row);
+                    }
+                }
+
+                // Interests: expect array of strings
+                function renderInterests(list) {
+                    const container = document.getElementById('interests-list');
+                    container.innerHTML = '';
+
+                    const section = document.getElementById('interests');
+                    if (!Array.isArray(list) || list.length === 0) {
+                        if (section) {
+                            section.style.display = 'none';
+                        } else {
+                            container.innerHTML = '<div style="color:var(--muted);font-size:13px">No interests available.</div>';
+                        }
+                        return;
+                    }
+                    if (section) section.style.display = ''; // makes sure section is visible only when entries exist
+
+                    for (const i of list) {
+                        const span = document.createElement('span');
+                        span.className = 'chip';
+                        span.textContent = i;
+                        container.appendChild(span);
+                    }
+                }
+
+                // Load and render all
+                fetchJson(paths.projects).then(renderProjects).catch(() => {
+                    document.getElementById('projects-list').innerHTML = '<div style="color:var(--muted);font-size:13px">Failed to load projects.</div>';
+                });
+
+                fetchJson(paths.experience).then(renderExperience).catch(() => {
+                    document.getElementById('experience-list').innerHTML = '<div style="color:var(--muted);font-size:13px">Failed to load experience.</div>';
+                });
+
+                fetchJson(paths.studies).then(renderStudies).catch(() => {
+                    document.getElementById('studies-list').innerHTML = '<div style="color:var(--muted);font-size:13px">Failed to load studies.</div>';
+                });
+
+                fetchJson(paths.interests).then(renderInterests).catch(() => {
+                    document.getElementById('interests-list').innerHTML = '<div style="color:var(--muted);font-size:13px">Failed to load interests.</div>';
+                });
+            })();
+        </script>
+
+        <footer>
+            Built with a minimal template • Last updated: <span id="last-updated">Loading…</span>
+            <script>
+            // Dynamically fetch and display the last modified date of this file
+            fetch(window.location.pathname, { method: 'HEAD' })
+                .then(res => {
+                const lastMod = res.headers.get('Last-Modified');
+                if (lastMod) {
+                    const date = new Date(lastMod);
+                    document.getElementById('last-updated').textContent =
+                    date.toLocaleDateString('en-UK', { year: 'numeric', month: 'short', day: 'numeric' });
+                } else {
+                    document.getElementById('last-updated').textContent = 'Unknown';
+                }
+                })
+                .catch(() => {
+                document.getElementById('last-updated').textContent = 'Unknown';
+                });
+            </script>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scrolling + active nav highlight
+        (function () {
+            const links = document.querySelectorAll('nav a[href^="#"]');
+            function onClick(e) {
+                e.preventDefault();
+                const id = this.getAttribute('href');
+                document.querySelector(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                links.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            }
+            links.forEach(l => l.addEventListener('click', onClick));
+
+            // Update active on scroll
+            const sections = [...document.querySelectorAll('main section, .hero > .card')].map(s => s);
+            function onScroll() {
+                let found = null;
+                for (const s of sections) {
+                    const rect = s.getBoundingClientRect();
+                    if (rect.top <= 120 && rect.bottom > 120) { found = s; break; }
+                }
+                if (found) {
+                    const id = '#' + (found.id || found.getAttribute('id') || '');
+                    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === id));
+                }
+            }
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+        })();
+    </script>
+</body>
+
+</html>

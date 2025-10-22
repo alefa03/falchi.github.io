@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Bachelor's Thesis — Falchi Webpage</title>
+    <meta name="description" content="Bachelor's Thesis project overview: Digital Twin for robot programming, simulation and control" />
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <a href="../index.html" class="btn">← Back to Homepage</a>
+        </header>
+
+        <main>
+            <div class="project-header">
+                <h1>Bachelor's Thesis</h1>
+                <p class="subtitle">
+                    <b>Title:</b> "Digital Twin for the programming, the simulation, and the control of a Robot."<br>
+                    <b>Supervisor:</b> Prof. Luca Iocchi
+                </p>
+            </div>
+
+            <section class="card">
+                <h2>Overview</h2>
+                <p>
+                    Bachelor's thesis project focused on showing the capabilities of a digital twin
+                    for robot programming and control. The project demonstrates how
+                    simulator-based development can enhance robotics programming workflow.
+                </p>
+                <p>
+                    The development environment has been containerized with Docker to enhance portability.
+                    The image is based on Ubuntu Noble Numbat, with a ROS2 Jazzy installation.
+                    Gazebo Harmonic has been used for simulating the robot behaviors.
+                    All the tests have been performed on the virtual model of the <i>SMARRtino</i> educational robot, based on the <a target="_blank" rel="noopener noreferrer" href="https://www.marrtino.org/"><i>MARRtino</i> project</a> and provided by Robotics 3D.
+                </p>
+            </section>
+
+            <section class="card">
+                <h2>Project Resources</h2>
+                <a class="btn" target="_blank" rel="noopener noreferrer" href="https://drive.google.com/file/d/1OW_RiXYPibCAI59z0JeiSi-0iFrUGe9a/">Paper</a>
+                <a class="btn" target="_blank" rel="noopener noreferrer" href="https://github.com/iocchi/marrtino_gazebo">Repository</a>
+                <a class="btn" target="_blank" rel="noopener noreferrer" href="/pages/404.html">Video</a>
+            </section>
+        </main>
+
+        <footer style="margin-top:40px;text-align:center;color:var(--muted);font-size:13px">
+            <p>Built with a minimal template • Last updated: <span id="last-updated">Loading…</span></p>
+        </footer>
+    </div>
+
+    <script>
+        // Last updated date
+        fetch(window.location.pathname, { method: 'HEAD' })
+            .then(res => {
+                const lastMod = res.headers.get('Last-Modified');
+                if (lastMod) {
+                    const date = new Date(lastMod);
+                    document.getElementById('last-updated').textContent =
+                        date.toLocaleDateString('en-UK', { year: 'numeric', month: 'short', day: 'numeric' });
+                } else {
+                    document.getElementById('last-updated').textContent = 'Unknown';
+                }
+            })
+            .catch(() => {
+                document.getElementById('last-updated').textContent = 'Unknown';
+            });
+    </script>
+</body>
+</html>
